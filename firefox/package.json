@@ -1,0 +1,9 @@
+{
+  "name": "unanet-firefox-extension",
+  "fullName": "unanet-firefox-extension",
+  "description": "Provides reminder and page enhancements to Unanet time sheets based on the Unanet Chrome Extension",
+  "author": "Evan Oxfeld",
+  "license": "MPL 2.0",
+  "version": "0.1",
+  "id": "jid1-eZACj393g6ZcMQ"
+}
