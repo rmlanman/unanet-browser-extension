@@ -1,0 +1,33 @@
+{
+  "name": "Unanet Chrome Extension",
+  "version": "0.1",
+  "manifest_version": 2,
+  "description": "Provides reminder and page enhancements to Unanet time sheets.",
+  "browser_action": {
+    "default_icon": "unanet.png",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "scripts": ["async.min.js", "unanet.js", "jquery-1.8.3.min.js", "background.js"]
+  },
+  "icons": {
+    "128": "unanet128.png"
+  },
+  "permissions": [
+    "https://timecards.nearinfinity.com/",
+    "notifications"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://timecards.nearinfinity.com/action/home"],
+      "js": ["async.min.js", "unanet.js", "jquery-1.8.3.min.js", "content-script-home.js"]
+    },
+    {
+      "matches": ["https://timecards.nearinfinity.com/action/time/edit*"],
+      "js": ["async.min.js", "unanet.js", "jquery-1.8.3.min.js", "content-script-time-edit.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    "unanet128.png"
+  ]
+}
