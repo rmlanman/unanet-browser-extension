@@ -11,7 +11,7 @@ cp ./unanet.js ./build/firefox/data
 cp ./libs/* ./build/firefox/data
 
 cd ./build/firefox
-zip unanet-firefox-extension.xpi * > /dev/null
+cfx xpi
 cp unanet-firefox-extension.xpi ../../firefox
 cd ../..
 
