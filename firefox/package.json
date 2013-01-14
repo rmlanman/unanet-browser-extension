@@ -5,6 +5,8 @@
   "author": "Evan Oxfeld",
   "license": "MPL 2.0",
   "version": "0.1",
+  "minVersion": "10",
+  "maxVersion": "18.*",
   "id": "jid1-eZACj393g6ZcMQ",
   "icon": "skin/unanet48.png",
   "icon64": "skin/unanet64.png"
