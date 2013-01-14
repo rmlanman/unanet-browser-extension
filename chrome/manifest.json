@@ -4,7 +4,7 @@
   "manifest_version": 2,
   "description": "Provides reminder and page enhancements to Unanet time sheets.",
   "browser_action": {
-    "default_icon": "unanet.png",
+    "default_icon": "unanet128.png",
     "default_popup": "popup.html"
   },
   "background": {

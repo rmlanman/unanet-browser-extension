@@ -58,7 +58,7 @@ function checkTimesheet(callback) {
       animateIconInterval = null;
     }
     chrome.browserAction.setBadgeText({text: ''});
-    chrome.browserAction.setIcon({path: "unanet.png"});
+    chrome.browserAction.setIcon({path: "unanet128.png"});
   }
 
   function setBadgeToError() {
@@ -75,7 +75,7 @@ function checkTimesheet(callback) {
       chrome.browserAction.setIcon({path: "unanetError128.png"});
       animateIconState = 1;
     } else {
-      chrome.browserAction.setIcon({path: "unanet.png"});
+      chrome.browserAction.setIcon({path: "unanet128.png"});
       animateIconState = 0;
     }
 
