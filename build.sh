@@ -17,3 +17,8 @@ mkdir ./build/firefox/data
 cp ./unanet.js ./build/firefox/data
 cp ./libs/* ./build/firefox/data
 
+cd ./build/firefox
+zip unanet-firefox-extension.xpi *
+cp unanet-firefox-extension.xpi ../../firefox
+cd ../..
+
