@@ -5,6 +5,8 @@ echo Building firefox extension...
 rm -rf ./build/firefox
 
 mkdir -p ./build/firefox
+mkdir -p ./build/firefox/skin
+cp ./images/* ./build/firefox/skin
 cp -R ./firefox/* ./build/firefox
 mkdir ./build/firefox/data
 cp ./unanet.js ./build/firefox/data
