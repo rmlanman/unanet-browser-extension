@@ -1,15 +1,16 @@
-'use strict';
-
 var baseUrl;
 
 (function() {
   $(function() {
     baseUrl = getBaseUrl(document.location.href);
-
-    addImportedExpenses();
+    addImportedExpenses(function() {
+      addTrainingExpenses(function() {
+        addBookBudgetExpenses();
+      });  
+    });
   });
 
-  function addImportedExpenses() {
+  function addImportedExpenses(callback) {
     $.ajax({
       type: "POST",
       url: baseUrl + "/action/expense/imported/list",
@@ -43,7 +44,90 @@ var baseUrl;
         data = data.replace(/<table class="list"/, '<table id="importedExpensesTable" class="list"');
         data = data.replace(/<script(.*?)<\/script>/g, '');
         var sectionBody = addSectionToHomeBody('Imported Expenses', 'importedExpensesSection', document.getElementById('importedExpensesTable'));
+        console.log(sectionBody.innerHTML);
         sectionBody.innerHTML += data;
+        callback();
+      }
+    });
+  }
+
+  function addBookBudgetExpenses() {
+    $.ajax({
+      type: "POST",
+      url: baseUrl + "/action/reports/user/detail/expense/report",
+      data: {
+        loadValues: true,
+        targetPath: '/reports/user/detail/expense/report',
+        managerPath: '/reports/user/detail/expense/search',
+        criteriaClass: 'com.unanet.page.reports.search.UserExpenseDetailsCriteria',
+        project_orgMode: false,
+        project_filterClosedProjects: false,
+        expensetype: '22',
+        dateRange: 'c_yr',
+        expenseDates: 'INCURRED',
+        includeNonCompletedExpenses: true,
+        showVoucherNumber: true,
+        showComments: false,
+        showPaymentMethod: false,
+        showProjTitle: false,
+        groupType:'byProject',
+      },
+      success: function(data) {
+        var dataIndex = data.indexOf('<table class="report"');
+        if (dataIndex === -1) {
+          dataIndex = data.indexOf('<table>');
+          data = data.substr(dataIndex);
+          data = data.replace(/<table/, '<table id="bookBudgetExpensesTable" class="list"');
+        } else {
+          data = data.substr(dataIndex);
+          data = data.replace(/<table class="report"/, '<table id="bookBudgetExpensesTable" class="list"');
+        }
+        data = data.substr(0, data.indexOf('</table>') + '</table>'.length);
+        data = data.replace(/<script(.*?)<\/script>/g, '');
+        var sectionBody = addSectionToHomeBody('Book Budget Expenses', 'bookBudgetExpensesSection', document.getElementById('bookBudgetExpensesTable'));
+        sectionBody.innerHTML += data;
+      }
+    });
+  }
+
+  function addTrainingExpenses(callback) {
+    $.ajax({
+      type: "POST",
+      url: baseUrl + "/action/reports/user/detail/expense/report",
+      data: {
+        loadValues: true,
+        targetPath: '/reports/user/detail/expense/report',
+        managerPath: '/reports/user/detail/expense/search',
+        criteriaClass: 'com.unanet.page.reports.search.UserExpenseDetailsCriteria',
+        project_orgMode: false,
+        project_filterClosedProjects: false,
+        expensetype: '55',
+        expensetype: '54',
+        expensetype: '53',
+        dateRange: 'c_yr',
+        expenseDates: 'INCURRED',
+        includeNonCompletedExpenses: true,
+        showVoucherNumber: true,
+        showComments: false,
+        showPaymentMethod: false,
+        showProjTitle: false,
+        groupType:'byProject',
+      },
+      success: function(data) {
+        var dataIndex = data.indexOf('<table class="report"');
+        if (dataIndex === -1) {
+          dataIndex = data.indexOf('<table>');
+          data = data.substr(dataIndex);
+          data = data.replace(/<table/, '<table id="trainingBudgetExpensesTable" class="list"');
+        } else {
+          data = data.substr(dataIndex);
+          data = data.replace(/<table class="report"/, '<table id="trainingBudgetExpensesTable" class="list"');
+        }
+        data = data.substr(0, data.indexOf('</table>') + '</table>'.length);
+        data = data.replace(/<script(.*?)<\/script>/g, '');
+        var sectionBody = addSectionToHomeBody('Training Budget Expenses', 'trainingBudgetExpensesSection', document.getElementById('trainingBudgetExpensesTable'));
+        sectionBody.innerHTML += data;
+        callback();
       }
     });
   }
