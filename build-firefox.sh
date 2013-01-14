@@ -16,7 +16,9 @@ cp ./libs/* ./build/firefox/data
 cd ./build/firefox
 rm unanet-firefox-extension.xpi
 rm ../../firefox/unanet-firefox-extension.xpi
-cfx xpi
+cfx xpi \
+  --update-link https://github.com/nearinfinity/unanet-browser-extension/blob/master/firefox/unanet-firefox-extension.xpi?raw=true \
+  --update-url https://github.com/nearinfinity/unanet-browser-extension/tree/master/firefox
 cp unanet-firefox-extension.xpi ../../firefox
 cd ../..
 
