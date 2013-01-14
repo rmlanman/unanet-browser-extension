@@ -1,0 +1,9 @@
+rmdir /s /q build
+mkdir build
+
+REM chrome
+mkdir build\chrome
+xcopy chrome\* build\chrome
+xcopy images\* build\chrome
+xcopy libs\* build\chrome
+
