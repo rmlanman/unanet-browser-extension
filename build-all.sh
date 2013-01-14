@@ -6,6 +6,3 @@ mkdir ./build
 ./build-chrome.sh
 ./build-firefox.sh
 ./build-safari.sh
-
-
-# safari
