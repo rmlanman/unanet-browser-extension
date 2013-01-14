@@ -22,3 +22,8 @@ zip unanet-firefox-extension.xpi *
 cp unanet-firefox-extension.xpi ../../firefox
 cd ../..
 
+# safari
+mkdir ./build/safari
+cp -R ./safari/* ./build/safari
+cp ./unanet.js ./build/safari/unanet.safariextension
+cp ./libs/* ./build/safari/unanet.safariextension

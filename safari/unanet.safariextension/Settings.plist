@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>Key</key>
+		<string>url</string>
+		<key>Title</key>
+		<string>Unanet Url</string>
+		<key>Type</key>
+		<string>TextField</string>
+	</dict>
+	<dict>
+		<key>Key</key>
+		<string>username</string>
+		<key>Secure</key>
+		<true/>
+		<key>Title</key>
+		<string>Username</string>
+		<key>Type</key>
+		<string>TextField</string>
+	</dict>
+	<dict>
+		<key>Key</key>
+		<string>password</string>
+		<key>Password</key>
+		<true/>
+		<key>Secure</key>
+		<true/>
+		<key>Title</key>
+		<string>Password</string>
+		<key>Type</key>
+		<string>TextField</string>
+	</dict>
+	<dict>
+		<key>Type</key>
+		<string>Separator</string>
+	</dict>
+	<dict>
+		<key>DefaultValue</key>
+		<string>5:00 pm</string>
+		<key>Key</key>
+		<string>ends</string>
+		<key>Title</key>
+		<string>Workday Ends</string>
+		<key>Titles</key>
+		<array>
+			<string>4:00 PM</string>
+			<string>4:30</string>
+			<string>5:00</string>
+			<string>5:30</string>
+			<string>6:00</string>
+			<string>6:30</string>
+			<string>7:00</string>
+		</array>
+		<key>Type</key>
+		<string>TextField</string>
+		<key>Values</key>
+		<array>
+			<real>5</real>
+			<string></string>
+			<string></string>
+			<string></string>
+			<string></string>
+			<string></string>
+		</array>
+	</dict>
+</array>
+</plist>
