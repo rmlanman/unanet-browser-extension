@@ -1,14 +1,38 @@
 var baseUrl;
+// var async = require('async');
 
 (function() {
   $(function() {
     baseUrl = getBaseUrl(document.location.href);
-    addImportedExpenses(function() {
-      addLeaveBudget(function() {
-        addTrainingExpenses(function() {
-          addBookBudgetExpenses()
+    async.parallel({
+      imported: function(callback) {
+        addImportedExpenses(function(results) {
+          callback(null, results);
         });
-      });  
+      },
+      leave: function(callback) {
+        addLeaveBudget(function(results) {
+          callback(null, results);
+        });
+      },
+      training: function(callback) {
+        addTrainingExpenses(function(results) {
+          callback(null, results);
+        });
+      },
+      book: function(callback) {
+        addBookBudgetExpenses(function(results) {
+          callback(null, results);
+        });
+      }
+    },
+    function (err, results){
+      async.series([
+        addSectionToHomeBody(results.imported.sectionTitle, results.imported.sectionId, results.imported.newElem, addHTML.bind(null, results.imported.html)),
+        addSectionToHomeBody(results.leave.sectionTitle, results.leave.sectionId, results.leave.newElem, addHTML.bind(null, results.leave.html)),
+        addSectionToHomeBody(results.training.sectionTitle, results.training.sectionId, results.training.newElem, addHTML.bind(null, results.training.html)),
+        addSectionToHomeBody(results.book.sectionTitle, results.book.sectionId, results.book.newElem, addHTML.bind(null, results.book.html)),
+      ]);
     });
   });
 
@@ -45,9 +69,7 @@ var baseUrl;
         data = data.substr(0, data.indexOf('</table>') + '</table>'.length);
         data = data.replace(/<table class="list"/, '<table id="importedExpensesTable" class="list"');
         data = data.replace(/<script(.*?)<\/script>/g, '');
-        var sectionBody = addSectionToHomeBody('Imported Expenses', 'importedExpensesSection', document.getElementById('importedExpensesTable'));
-        sectionBody.innerHTML += data;
-        callback();
+        callback({sectionTitle:'Imported Expenses', sectionId:'importedExpensesSection', newElem:document.getElementById('importedExpensesTable'), html:data});
       }
     });
   }
@@ -91,9 +113,7 @@ var baseUrl;
         var second = data.substr(data.indexOf('</table>') + 1).indexOf('</table>');
         data = data.substr(0, first + second + '</table>'.length);
         data = data.replace(/<script(.*?)<\/script>/g, '');
-        var sectionBody = addSectionToHomeBody('Leave Balances', 'leaveBalancesSection', document.getElementById('leaveBalanceTable'));
-        sectionBody.innerHTML += data;
-        callback();
+        callback({sectionTitle:'Leave Balances', sectionId:'leaveBalancesSection', newElem:document.getElementById('leaveBalanceTable'), html:data});
       }
     });
   }
@@ -146,14 +166,12 @@ var baseUrl;
         remainingBudget = remainingBudget - totalExpenses;
         var remainingHTML = '<tr class="t1"><td colspan="5" class="label">Remaining Training Budget:</td><td class="total">$' + remainingBudget + '</td></tr>';
         data = firstHalf.concat(remainingHTML).concat(secondHalf);
-        var sectionBody = addSectionToHomeBody('Training Budget Expenses', 'trainingBudgetExpensesSection', document.getElementById('trainingBudgetExpensesTable'));
-        sectionBody.innerHTML += data;
-        callback();
+        callback({sectionTitle:'Training Budget Expenses', sectionId:'trainingBudgetExpensesSection', newElem:document.getElementById('trainingBudgetExpensesTable'), html:data});
       }
     });
   }
 
-  function addBookBudgetExpenses() {
+  function addBookBudgetExpenses(callback) {
     $.ajax({
       type: "POST",
       url: baseUrl + "/action/reports/user/detail/expense/report",
@@ -199,13 +217,12 @@ var baseUrl;
         remainingBudget = remainingBudget - totalExpenses;
         var remainingHTML = '<tr class="t1"><td colspan="5" class="label">Remaining Budget:</td><td class="total">$' + remainingBudget + '</td></tr>';
         data = firstHalf.concat(remainingHTML).concat(secondHalf);
-        var sectionBody = addSectionToHomeBody('Book Budget Expenses', 'bookBudgetExpensesSection', document.getElementById('bookBudgetExpensesTable'));
-        sectionBody.innerHTML += data;
+        callback({sectionTitle:'Book Budget Expenses', sectionId:'bookBudgetExpensesSection', newElem:document.getElementById('bookBudgetExpensesTable'), html:data});
       }
     });
   }
 
-  function addSectionToHomeBody(title, sectionId, newElem) {
+  function addSectionToHomeBody(title, sectionId, newElem, callback) {
     var homeBodyElem = findHomeBodyElem();
     homeBodyElem.innerHTML +=
     "<table class='section' id='" + sectionId + "'>"
@@ -221,7 +238,11 @@ var baseUrl;
       + "</tr>"
       + "</tbody>"
       + "</table>";
-    return document.getElementById(sectionId + '_body');
+    return callback(document.getElementById(sectionId + '_body'));
+  }
+
+  function addHTML(data, sectionBody) {
+    return sectionBody.innerHTML += data;
   }
 
   function findHomeBodyElem() {
