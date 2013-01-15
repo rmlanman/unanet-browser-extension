@@ -16,4 +16,4 @@ Developers
 1. `./build-safari.sh`
 1. Open Safari develop menu -> Extension builder
 1. Install a [Safari Certificate](https://developer.apple.com/support/safari/developer-certificates.html) if you haven't already
-1. Add Extension located in `build/safari/unanet.safariextension
+1. Add Extension located in `build/safari/unanet.safariextension`
