@@ -7,14 +7,14 @@
 		<dict>
 			<key>CFBundleIdentifier</key>
 			<string>com.nearinfinity.unanet</string>
+			<key>CFBundleShortVersionString</key>
+			<string>1.0.2</string>
+			<key>CFBundleVersion</key>
+			<string>3</string>
 			<key>Developer Identifier</key>
 			<string>SWF9T586H2</string>
-			<key>CFBundleVersion</key>
-			<string>1</string>
-			<key>CFBundleShortVersionString</key>
-			<string>1.0</string>
 			<key>URL</key>
-      <string>https://github.com/nearinfinity/unanet-safari-extension/raw/master/unanet.safariextz</string>
+			<string>https://raw.github.com/wiki/nearinfinity/unanet-browser-extension/downloads/unanet.safariextz</string>
 		</dict>
 	</array>
 </dict>

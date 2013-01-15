@@ -7,15 +7,15 @@
 	<key>Builder Version</key>
 	<string>8536.26.17</string>
 	<key>CFBundleDisplayName</key>
-	<string>unanet-safari-extension</string>
+	<string>Unanet Notifier</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.nearinfinity.unanet-safari-extension</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.0.2</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>3</string>
 	<key>Chrome</key>
 	<dict>
 		<key>Global Page</key>
@@ -62,7 +62,7 @@
 		</dict>
 	</dict>
 	<key>Description</key>
-	<string>Unanet Timecard Extension</string>
+	<string>Check Unanet Timecard is complete for today</string>
 	<key>ExtensionInfoDictionaryVersion</key>
 	<string>1.0</string>
 	<key>Permissions</key>
@@ -75,7 +75,9 @@
 			<string>All</string>
 		</dict>
 	</dict>
+	<key>Update Manifest URL</key>
+  <string>https://raw.github.com/nearinfinity/unanet-browser-extension/master/safari/manifest.plist</string>
 	<key>Website</key>
-	<string>https://github.com/nearinfinity/unanet-safari-extension</string>
+	<string>https://github.com/nearinfinity/unanet-browser-extension</string>
 </dict>
 </plist>
