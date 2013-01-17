@@ -4,7 +4,7 @@
   "description": "Provides reminder and page enhancements to Unanet time sheets",
   "author": "Evan Oxfeld",
   "license": "MPL 2.0",
-  "version": "0.2",
+  "version": "0.2.1",
   "minVersion": "10",
   "maxVersion": "18.*",
   "id": "jid1-eZACj393g6ZcMQ",
