@@ -35,3 +35,46 @@ body {
   display: inline-block;
   font-size: 10pt;
 }
+
+/************* unanet css for popup ************/
+table{font-family:Arial,Verdana,Helvetica,sans-serif;font-size:11px;font-style:normal;font-weight:normal;}
+
+table.list{border-collapse:collapse;border:solid 1px #ccc;border-spacing:0;margin-top:5px;}
+table.list colgroup,table.list tbody,table.list thead,table.list tfoot{border:solid 1px #ccc;}
+table.list td{border-color:#ccc;padding:0 3px;}
+table.list thead tr td{background-color:#e7ebf7;font-weight:bold;vertical-align:bottom;color:#29457b;}
+table.list thead tr.subhead td{background-color:#e7e7e7;text-align:center;border-top:solid 1px #ccc;}
+table.list tbody td{padding:0 .5em;white-space:nowrap;}
+table.list tbody td.description{white-space:normal;}
+table.list tbody.header td{background-color:#e5e5e5;font-weight:bold;text-align:center;vertical-align:bottom;color:#29457b;border-bottom:1px solid;padding-left:5px;}
+table.list tbody tr:hover{background-color:#f3f3f3;}
+table.list tbody tr.h1 td,table.list tbody tr.h2 td,table.list tbody tr.h3 td{text-align:left;padding:.2em .5em;border-top:gray 1px solid;border-bottom:gray 1px solid;}
+table.list tbody tr td.icon{text-align:center;padding:2px .15em 0 .15em;width:17px;}
+table.list tbody tr.h1 td{background-color:#e7ebf7;}
+table.list tbody tr.h2 td{background-color:#e5e5e5;}
+table.list tbody tr td.h3{background-color:#ecf4ee;}
+table.list tbody tr.h1 td.date,table.list tbody tr.h2 td.date,table.list tbody tr.h3 td.date,table.list td.date{text-align:right;white-space:nowrap;}
+table.list .icon{text-align:center;padding:2px .15em 0 .15em;width:17px;}
+table.list tbody tr.activeRow td{background-color:#ffffce;}
+.activeLabel{background-color:#ffffce;}
+table.list tbody tr.editRow td,table.list tbody tr.editRowNew td,table.list tbody tr.editRowButtons td{border-top:#e6e6e6 1px solid;padding-top:2px;background-color:#ffffce;}
+table.list tbody tr.editRowNew td{padding-left:0;padding-right:0;}
+table.list tbody tr.editRowInner td{border:none;padding-top:2px;}
+table.list tbody tr.editRowButtons td{border-bottom:#e5e5e5 1px solid;padding-bottom:2px;}
+table.list tbody tr.t1 td{border-top:gray 1px solid;border-bottom:gray 2px solid;background-color:#ccc;color:#000;}
+table.list tbody tr.t2 td{border-top:#ccc 1px solid;text-align:right;}
+table.list tbody.footer td{background-color:#ccc;font-weight:bold;}
+table td.empty{font-style:italic;padding:3px 10px;text-align:center;}
+table td.empty-narrow{font-style:italic;padding:3px 6px;text-align:center;}
+.total{white-space:nowrap;text-align:right;}
+table.list tfoot td{border-top:gray 1px solid;font-size:10px;}
+table.list span.default{color:#808080;}
+table.list td.right{text-align:right;}
+table.list td.center{text-align:center;}
+table.list td.left{text-align:left;}
+table.list tbody tr.group td,table.list tbody tr.group-last td{background-color:#f3f3f3;}
+table.list tbody tr.group-last td{border-bottom:gray 1px solid;}
+table.list tbody tr.group td.error,table.list tbody tr.group-last td.error{text-align:center;color:red;}
+table.list tbody tr.group td.message,table.list tbody tr.group-last td.message{text-align:center;color:#29457B;}
+
+.number{white-space:nowrap;text-align:right;}

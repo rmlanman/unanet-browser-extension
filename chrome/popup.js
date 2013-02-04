@@ -6,6 +6,7 @@
     loadSettings();
     loadLastCheckTime();
     loadTimesheetErrors();
+    loadReports();
 
     chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
       if (request && request.action && request.action == 'checkComplete') {
@@ -44,5 +45,30 @@
     $('#checkNowButton').attr('disabled', 'disabled');
     $('#checkNowButton').val('Checking...');
     chrome.extension.sendMessage({ action: 'recheck' }, function(res) {});
+  }
+
+  function loadReports() {
+    var baseUrl = getBaseUrl(localStorage.url);
+
+    getTrainingExpensesHtml(baseUrl, function(err, data) {
+      if (err) {
+        return $('#trainingReport').html(err.message);
+      }
+      return $('#trainingReport').html(data);
+    });
+
+    getBookBudgetExpensesHtml(baseUrl, function(err, data) {
+      if (err) {
+        return $('#bookBudgetReport').html(err.message);
+      }
+      return $('#bookBudgetReport').html(data);
+    });
+
+    getLeaveBudgetHtml(baseUrl, function(err, data) {
+      if (err) {
+        return $('#leaveReport').html(err.message);
+      }
+      return $('#leaveReport').html(data);
+    });
   }
 })();
