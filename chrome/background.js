@@ -12,7 +12,7 @@ function checkTimesheet(callback) {
     password: localStorage.password
   };
 
-  return doCheck(function(err, timesheetErrors) {
+  return checkTimesheets(opts, function(err, timesheetErrors) {
     localStorage.timesheetErrors = null;
     localStorage.errorMessages = null;
 
@@ -79,70 +79,6 @@ function checkTimesheet(callback) {
       animateIconState = 0;
     }
 
-  }
-
-  function doCheck(callback) {
-    var allTimesheetErrors = [];
-    return getActiveTimesheets(opts, function(err, timesheets) {
-      if (err) {
-        return callback(err);
-      }
-      return async.forEach(timesheets, function(timesheet, callback) {
-        return getTimesheet(opts, timesheet.id, function(err, timesheetData) {
-          if (err) {
-            return callback(err);
-          }
-          return checkTimesheet(timesheetData, function(err, timesheetErrors) {
-            if (err) {
-              return callback(err);
-            }
-            if (timesheetErrors && timesheetErrors.length > 0) {
-              allTimesheetErrors.push({
-                timesheetId: timesheet.id,
-                errors: timesheetErrors
-              });
-            }
-            return callback();
-          });
-        });
-      }, function(err) {
-        if (err) {
-          return callback(err);
-        }
-        return callback(null, allTimesheetErrors);
-      });
-    });
-  }
-
-  function checkTimesheet(timesheet, callback) {
-    var endOfToday = new Date();
-    endOfToday.setHours(23, 59, 59, 999);
-    var startOfToday = new Date();
-    startOfToday.setHours(0, 0, 0, 0);
-    var endOfWorkDay = new Date();
-    endOfWorkDay.setHours(localStorage.endOfDayHours, localStorage.endOfDayMinutes, 0, 0);
-
-    var errors = [];
-    timesheet.columns.forEach(function(column, i) {
-      var columnDate = new Date(column);
-      var columnDay = columnDate.getDay();
-      if (columnDay == Days.Saturday || columnDay == Days.Sunday) {
-        return;
-      }
-      if (columnDate > endOfToday) {
-        return;
-      }
-      if (columnDate >= startOfToday && columnDate <= endOfToday && new Date() < endOfWorkDay) {
-        return;
-      }
-      if (!timesheet.totals[i] || timesheet.totals[i] == 0) {
-        errors.push({
-          date: columnDate,
-          message: 'No time filled in for ' + formatDate_MM_dd_yyyy(columnDate)
-        });
-      }
-    });
-    return callback(null, errors);
   }
 }
 

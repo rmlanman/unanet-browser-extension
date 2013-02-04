@@ -39,7 +39,7 @@
         if (timesheetErrors.length > 0) {
           timesheetErrors.forEach(function(timesheetError) {
             timesheetError.errors.forEach(function(error) {
-              html += '<li>' + error.message + ' <a href="#" class="openTimesheetLink" timesheetId="' + timesheetError.timesheetId + '">open timesheet</a></li>';
+              html += '<li>' + error.message + ' <a href="#" class="openTimesheetLink" timesheetId="' + (timesheetError.timesheetId || '') + '">open timesheet</a></li>';
               hasError = true;
             });
           });
@@ -57,7 +57,12 @@
 
     $('.openTimesheetLink').click(function() {
       var timesheetId = $(this).attr('timesheetId');
-      var timesheetUrl = localStorage.url + '/action/time/edit?timesheetkey=' + timesheetId;
+      var timesheetUrl;
+      if (timesheetId) {
+        timesheetUrl = localStorage.url + '/action/time/edit?timesheetkey=' + timesheetId;
+      } else {
+        timesheetUrl = localStorage.url + '/action/time';
+      }
       chrome.tabs.create({
         url: timesheetUrl,
         active: true
