@@ -29,7 +29,7 @@ function checkTimesheets(opts, callback) {
             }
           ]
         }
-      ]);
+      ], timesheets);
     }
     return async.forEach(timesheets, function(timesheet, callback) {
       return getTimesheet(opts, timesheet.id, function(err, timesheetData) {
@@ -53,7 +53,7 @@ function checkTimesheets(opts, callback) {
       if (err) {
         return callback(err);
       }
-      return callback(null, allTimesheetErrors);
+      return callback(null, allTimesheetErrors, timesheets);
     });
   });
 

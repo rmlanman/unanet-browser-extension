@@ -12,14 +12,20 @@ function checkTimesheet(callback) {
     password: localStorage.password
   };
 
-  return checkTimesheets(opts, function(err, timesheetErrors) {
+  return checkTimesheets(opts, function(err, timesheetErrors, timesheets) {
     localStorage.timesheetErrors = null;
     localStorage.errorMessages = null;
+    localStorage.lastCheck = new Date();
+    localStorage.currentTimesheetId = null;
 
     if (err) {
       localStorage.errorMessages = err.toString();
       setBadgeToError();
       return;
+    }
+
+    if (timesheets && timesheets.length > 0) {
+      localStorage.currentTimesheetId = timesheets[0].id;
     }
 
     if (timesheetErrors.length > 0) {
