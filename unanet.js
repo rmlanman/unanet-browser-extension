@@ -110,12 +110,15 @@ function getActiveTimesheets(opts, callback) {
       var rowId = $(this).attr('id');
       if (rowId) {
         var columns = $('td', this);
-        rows.push({
-          id: parseInt(rowId.substr('t'.length)),
-          startDate: new Date($(columns.get(3)).text()),
-          endDate: new Date($(columns.get(5)).text()),
-          status: $(columns.get(7)).text()
-        });
+        var status = $(columns.get(7)).text();
+        if (status === 'INUSE') {
+          rows.push({
+            id: parseInt(rowId.substr('t'.length)),
+            startDate: new Date($(columns.get(3)).text()),
+            endDate: new Date($(columns.get(5)).text()),
+            status: status
+          });
+        }
       }
     });
     return callback(null, rows);
