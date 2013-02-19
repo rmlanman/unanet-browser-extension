@@ -10,4 +10,4 @@
  - You should now see a Unanet icon in the top right of the Chrome window.
  - Go to `chrome://extensions/`
  - Click the Unanet Chrome Extention "Options" and save credentials.
- - For URL enter 'http://timecards.nearinfinity.com'
+ - For URL enter 'https://timecards.nearinfinity.com'
