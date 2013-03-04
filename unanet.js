@@ -19,17 +19,22 @@ function checkTimesheets(opts, callback) {
       return callback(err);
     }
     if (timesheets.length == 0) {
-      return callback(null, [
-        {
-          timesheetId: null,
-          errors: [
+      shouldHaveActiveTimesheet(opts, function (err, shouldWarn) {
+        if (shouldWarn) {
+          return callback(null, [
             {
-              date: new Date(),
-              message: 'No active timesheets'
+              timesheetId: null,
+              errors: [
+                {
+                  date: new Date(),
+                  message: 'No active timesheets'
+                }
+              ]
             }
-          ]
-        }
-      ], timesheets);
+          ], timesheets);
+        }  
+      });
+      
     }
     return async.forEach(timesheets, function(timesheet, callback) {
       return getTimesheet(opts, timesheet.id, function(err, timesheetData) {
@@ -119,6 +124,47 @@ function getActiveTimesheets(opts, callback) {
             status: status
           });
         }
+      }
+    });
+    return callback(null, rows);
+  });
+}
+
+function getAllTimesheets(opts, callback) {
+  return getUrl(opts, '/action/time/list', function(err, body) {
+    if (err) {
+      return callback(err);
+    }
+
+    var rows = [];
+
+    body = body.substr(body.indexOf('<div id="active-timesheet-list"'));
+    var activeTimesheetElem = $(body)[0];
+    $('tr', activeTimesheetElem).each(function() {
+      var rowId = $(this).attr('id');
+      if (rowId) {
+        var columns = $('td', this);
+        rows.push({
+          id: parseInt(rowId.substr('t'.length)),
+          startDate: new Date($(columns.get(3)).text()),
+          endDate: new Date($(columns.get(5)).text()),
+          status: status
+        });
+      }
+    });
+
+    body = body.substr(body.indexOf('<div id="inactive-timesheet-list"'));
+    var inactiveTimesheetElem = $(body)[0];
+    $('tr', inactiveTimesheetElem).each(function() {
+      var rowId = $(this).attr('id');
+      if (rowId) {
+        var columns = $('td', this);
+        rows.push({
+          id: parseInt(rowId.substr('t'.length)),
+          startDate: new Date($(columns.get(3)).text()),
+          endDate: new Date($(columns.get(5)).text()),
+          status: status
+        });
       }
     });
     return callback(null, rows);
@@ -247,6 +293,35 @@ function login(opts, callback) {
       }
     }
   );
+}
+
+function shouldHaveActiveTimesheet(opts, callback) {
+  var currentDate = new Date();
+  currentDate.setDate(currentDate.getDate() + 14);
+  var dayOfTheWeek = currentDate.getDay();
+  var shouldWarn = false;
+  if (dayOfTheWeek === Days.Saturday || dayOfTheWeek === Days.Sunday) {
+    return callback(null, shouldWarn);
+  } else {
+    getAllTimesheets(opts, function (err, timesheets) {
+      if (err) {
+        return callback(err);
+      }
+      timesheetExistsForCurrentDay(timesheets, currentDate, function (exists) {
+        return callback(null, !exists);
+      });
+    });
+  }
+}
+
+function timesheetExistsForCurrentDay(timesheets, date, callback) {
+  timesheets.forEach(function (timesheet, index) {
+    if ((+timesheet.startDate < +date) && (+date < +timesheet.endDate)) {
+      return callback(true);
+    } else if (index === timesheets.length - 1) {
+      return callback(false);
+    }
+  });
 }
 
 function formatDate_MM_dd_yyyy(d) {
