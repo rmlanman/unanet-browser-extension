@@ -37,6 +37,9 @@ var baseUrl;
   }
 
   function addTrainingExpenses(callback) {
+    chrome.extension.sendMessage({method: "getLocalStorage", key: "trainingBudget"}, function(response) {
+      localStorage.trainingBudget = parseInt(response);
+    });
     getTrainingExpensesHtml(baseUrl, function(err, data) {
       if (err) {
         return callback(err);
@@ -46,6 +49,9 @@ var baseUrl;
   }
 
   function addBookBudgetExpenses(callback) {
+    chrome.extension.sendMessage({method: "getLocalStorage", key: "bookBudget"}, function(response) {
+      localStorage.bookBudget = parseInt(response);
+    });
     return getBookBudgetExpensesHtml(baseUrl, function(err, data) {
       if (err) {
         return callback(err);

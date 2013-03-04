@@ -92,7 +92,10 @@ setInterval(checkTimesheet, 10 * 60 * 1000);
 checkTimesheet();
 
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
-  if (request && request.action && request.action == 'recheck') {
+  if (request.method == "getLocalStorage") {
+    sendResponse(localStorage[request.key]);
+  }
+  else if (request && request.action && request.action == 'recheck') {
     checkTimesheet(function() {
       // NOTE: Couldn't get sendResponse to work inside this callback
       chrome.extension.sendMessage({action: 'checkComplete'});

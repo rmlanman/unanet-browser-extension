@@ -358,7 +358,7 @@ function getTrainingExpensesHtml(baseUrl, callback) {
     },
     success: function getTrainingExpensesHtmlSuccess(data) {
       var dataIndex = data.indexOf('<table class="report"');
-      var remainingBudget = 5000;
+      var remainingBudget = parseInt(localStorage.trainingBudget) || 5000;
       var totalExpenses = 0;
       var firstHalf;
       var secondHalf;
@@ -378,7 +378,7 @@ function getTrainingExpensesHtml(baseUrl, callback) {
         firstHalf = data.substr(0, data.indexOf('</tbody>'));
         secondHalf = data.substr(data.indexOf('</tbody>'));
       }
-      remainingBudget = remainingBudget - totalExpenses;
+      remainingBudget = (remainingBudget - totalExpenses).toFixed(2);
       var remainingHTML = '<tr class="t1"><td colspan="5" class="label">Remaining Training Budget:</td><td class="total">$' + remainingBudget + '</td></tr>';
       data = firstHalf.concat(remainingHTML).concat(secondHalf);
       return callback(null, data);
@@ -409,7 +409,7 @@ function getBookBudgetExpensesHtml(baseUrl, callback) {
     },
     success: function getBookBudgetExpensesHtmlSuccess(data) {
       var dataIndex = data.indexOf('<table class="report"');
-      var remainingBudget = 500;
+      var remainingBudget = parseInt(localStorage.bookBudget) || 500;
       var totalExpenses = 0;
       var firstHalf;
       var secondHalf;
@@ -429,8 +429,8 @@ function getBookBudgetExpensesHtml(baseUrl, callback) {
         firstHalf = data.substr(0, data.indexOf('</tbody>'));
         secondHalf = data.substr(data.indexOf('</tbody>'));
       }
-      remainingBudget = remainingBudget - totalExpenses;
-      var remainingHTML = '<tr class="t1"><td colspan="5" class="label">Remaining Budget:</td><td class="total">$' + remainingBudget + '</td></tr>';
+      remainingBudget = (remainingBudget - totalExpenses).toFixed(2);
+      var remainingHTML = '<tr class="t1"><td colspan="5" class="label">Remaining Book Budget:</td><td class="total">$' + remainingBudget + '</td></tr>';
       data = firstHalf.concat(remainingHTML).concat(secondHalf);
       return callback(null, data);
     }

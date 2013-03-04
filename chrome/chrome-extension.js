@@ -51,6 +51,8 @@ function loadSettings() {
   $('#endOfDayTimeHour').val(hours0to12);
   $('#endOfDayTimeMinute').val(localStorage.endOfDayMinutes);
   $('#endOfDayTimeAmPm').val(endOfDayDate.getHours() < 12 ? 0 : 1);
+  $('#trainingBudget').val(localStorage.trainingBudget || 5000);
+  $('#bookBudget').val(localStorage.bookBudget || 500);
 
   updateLinks();
 }
@@ -61,6 +63,8 @@ function saveSettings() {
   localStorage.password = $('#password').val();
   localStorage.endOfDayMinutes = $('#endOfDayTimeMinute').val();
   localStorage.endOfDayHours = parseInt($('#endOfDayTimeHour').val()) + (parseInt($('#endOfDayTimeAmPm').val()) * 12);
+  localStorage.trainingBudget = parseInt($('#trainingBudget').val()); 
+  localStorage.bookBudget = parseInt($('#bookBudget').val());
   updateLinks();
 }
 
