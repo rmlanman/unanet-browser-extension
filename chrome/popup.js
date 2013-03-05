@@ -70,5 +70,12 @@
       }
       return $('#leaveReport').html(data);
     });
+
+    getShortImportedExpensesHtml(baseUrl, function(err, data) {
+      if (err) {
+        return $('#importedExpensesReport').html(err.message);
+      }
+      return $('#importedExpensesReport').html(data);
+    });
   }
 })();

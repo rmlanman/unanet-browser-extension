@@ -621,4 +621,42 @@ function getShortBookBudgetExpensesHtml(baseUrl, callback) {
   });
 }
 
+function getShortImportedExpensesHtml(baseUrl, callback) {
+  $.ajax({
+    type: "POST",
+    url: baseUrl + "/action/expense/imported/list",
+    data: {
+      voucher_mod: false,
+      voucherClass: 'com.unanet.page.criteria.UserVoucherNumberMenu',
+      voucher_dbValue: null,
+      voucher_voucherNumber_fltr: null,
+      vendor_mod: false,
+      vendorClass: 'com.unanet.page.criteria.VendorMenu',
+      vendor_dbValue: null,
+      vendor_vendor_fltr: null,
+      expense_date_bDate: 'BOT',
+      expense_date_eDate: 'EOT',
+      expense_date: 'bot_eot',
+      imported_date_bDate: 'BOT',
+      imported_date_eDate: 'EOT',
+      imported_date: 'bot_eot',
+      reportStatus: 'AVAILABLE',
+      savedListName: 'criteriaClass:com.unanet.page.expense.ImportedExpensePage$ImportedExpenseSearchCriteria',
+      loadValues: true,
+      restore: false,
+      list: true,
+      edit: false,
+      addNext: false,
+      blindInsert: false
+    },
+    success: function getImportedExpensesHtmlSuccess(data) {
+      if (data.indexOf('No data found') === -1) {
+        return callback(null, "<div class=\"warn\">You have unreported expenses</div>");
+      } else {
+        return callback(null, "<div class=\"okay\">No unreported expenses</div>");
+      }
+    }
+  });
+}
+
 

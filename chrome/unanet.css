@@ -38,6 +38,8 @@ body {
 
 /************* unanet css for popup ************/
 a.padded{padding-left: 30px}
+div.okay{color:#31B404;}
+div.warn{color:red;}
 table{font-family:Arial,Verdana,Helvetica,sans-serif;font-size:13px;font-style:normal;font-weight:normal;margin-left: 10px;}
 
 table.list{border-collapse:collapse;border:solid 1px #ccc;border-spacing:0;margin-top:5px;}
