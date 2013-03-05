@@ -546,7 +546,7 @@ function getShortLeaveBudgetHTML(baseUrl, callback) {
       data = data.substr(data.indexOf('number') + 8);
       data = data.substr(data.indexOf('number') + 8);
       data = parseFloat(data);
-      return callback(null, data);
+      return callback(null, data + " hours");
     }
   });
 }
@@ -581,7 +581,7 @@ function getShortTrainingBudgetExpensesHtml(baseUrl, callback) {
         totalExpenses = Number(totalExpenses.substring(0, totalExpenses.indexOf('</td>')));
       }
       remainingBudget = (remainingBudget - totalExpenses).toFixed(2);
-      return callback(null, remainingBudget);
+      return callback(null, '$' + remainingBudget);
     }
   });
 }
@@ -616,7 +616,7 @@ function getShortBookBudgetExpensesHtml(baseUrl, callback) {
         totalExpenses = Number(totalExpenses.substring(0, totalExpenses.indexOf('</td>')));
       } 
       remainingBudget = (remainingBudget - totalExpenses).toFixed(2);
-      return callback(null, remainingBudget);
+      return callback(null, '$' + remainingBudget);
     }
   });
 }

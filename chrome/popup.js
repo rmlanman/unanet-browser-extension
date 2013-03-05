@@ -54,14 +54,14 @@
       if (err) {
         return $('#trainingReport').html(err.message);
       }
-      return $('#trainingReport').html('$' + data);
+      return $('#trainingReport').html(data);
     });
 
     getShortBookBudgetExpensesHtml(baseUrl, function(err, data) {
       if (err) {
         return $('#bookBudgetReport').html(err.message);
       }
-      return $('#bookBudgetReport').html('$' + data);
+      return $('#bookBudgetReport').html(data);
     });
 
     getShortLeaveBudgetHTML(baseUrl, function(err, data) {
