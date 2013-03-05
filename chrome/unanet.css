@@ -37,7 +37,7 @@ body {
 }
 
 /************* unanet css for popup ************/
-table{font-family:Arial,Verdana,Helvetica,sans-serif;font-size:11px;font-style:normal;font-weight:normal;}
+table{font-family:Arial,Verdana,Helvetica,sans-serif;font-size:13px;font-style:normal;font-weight:normal;margin-left: 10px;}
 
 table.list{border-collapse:collapse;border:solid 1px #ccc;border-spacing:0;margin-top:5px;}
 table.list colgroup,table.list tbody,table.list thead,table.list tfoot{border:solid 1px #ccc;}
@@ -45,6 +45,12 @@ table.list td{border-color:#ccc;padding:0 3px;}
 table.list thead tr td{background-color:#e7ebf7;font-weight:bold;vertical-align:bottom;color:#29457b;}
 table.list thead tr.subhead td{background-color:#e7e7e7;text-align:center;border-top:solid 1px #ccc;}
 table.list tbody td{padding:0 .5em;white-space:nowrap;}
+table.list tbody td.right{text-align:right;}
+table.list tbody td.center{text-align:center;}
+table.list tbody td.left{text-align:left;}
+table.list tbody th.right{text-align:right;}
+table.list tbody th.center{text-align:center;}
+table.list tbody th.left{text-align:left; padding-right:10px;}
 table.list tbody td.description{white-space:normal;}
 table.list tbody.header td{background-color:#e5e5e5;font-weight:bold;text-align:center;vertical-align:bottom;color:#29457b;border-bottom:1px solid;padding-left:5px;}
 table.list tbody tr:hover{background-color:#f3f3f3;}
@@ -76,5 +82,5 @@ table.list tbody tr.group td,table.list tbody tr.group-last td{background-color:
 table.list tbody tr.group-last td{border-bottom:gray 1px solid;}
 table.list tbody tr.group td.error,table.list tbody tr.group-last td.error{text-align:center;color:red;}
 table.list tbody tr.group td.message,table.list tbody tr.group-last td.message{text-align:center;color:#29457B;}
-
+table.list caption{text-align: left; color:#29457b; font-weight: bold; font-size: 14px;margin-left: -10px;}
 .number{white-space:nowrap;text-align:right;}

@@ -512,3 +512,113 @@ function getBookBudgetExpensesHtml(baseUrl, callback) {
   });
 }
 
+// Short Versions of the HTMLs
+function getShortLeaveBudgetHTML(baseUrl, callback) {
+  $.ajax({
+    type: "POST",
+    url: baseUrl + "/action/reports/user/detail/schedule/report",
+    data: {
+      loadValues: true,
+      targetPath: '/reports/user/detail/schedule/report',
+      managerPath: '/reports/user/detail/schedule/search',
+      criteriaClass: 'com.unanet.page.reports.search.UserScheduleDetailsCriteria',
+      project_orgMode: false,
+      project_filterClosedProjects: false,
+      status: "1",
+      dateType: "range",
+      pPeriod: 'c_yr',
+      reportAssign: true,
+      allocateBudgets: true,
+      accruals: true,
+      projectedAccruals: false,
+      leave_request: "INCLUDE_LEAVE",
+      unapprovedLeave: false,
+      includeBoundOnly: false,
+      includeUnsched: false,
+      leaveBalance: true,
+      showProjTitle: true
+    },
+    success: function getLeaveBudgetHtmlSuccess(data) {
+      data = data.substr(data.indexOf('PTO'));
+      data = data.substr(data.indexOf('number') + 8);
+      data = data.substr(data.indexOf('number') + 8);
+      data = data.substr(data.indexOf('number') + 8);
+      data = data.substr(data.indexOf('number') + 8);
+      data = data.substr(data.indexOf('number') + 8);
+      data = parseFloat(data);
+      return callback(null, data);
+    }
+  });
+}
+
+function getShortTrainingBudgetExpensesHtml(baseUrl, callback) {
+  $.ajax({
+    type: "POST",
+    url: baseUrl + "/action/reports/user/detail/expense/report",
+    data: {
+      loadValues: true,
+      targetPath: '/reports/user/detail/expense/report',
+      managerPath: '/reports/user/detail/expense/search',
+      criteriaClass: 'com.unanet.page.reports.search.UserExpenseDetailsCriteria',
+      project_orgMode: false,
+      project_filterClosedProjects: false,
+      expensetype: ['55','54','53'],
+      dateRange: 'c_yr',
+      expenseDates: 'INCURRED',
+      includeNonCompletedExpenses: true,
+      showVoucherNumber: true,
+      showComments: false,
+      showPaymentMethod: false,
+      showProjTitle: false,
+      groupType: 'byProject'
+    },
+    success: function getTrainingExpensesHtmlSuccess(data) {
+      var dataIndex = data.indexOf('<table class="report"');
+      var remainingBudget = parseInt(localStorage.trainingBudget) || 5000;
+      var totalExpenses = 0;
+      if (dataIndex != -1) {
+        totalExpenses = data.substring(data.indexOf('<td class="total">$') + '<td class="total">$'.length);
+        totalExpenses = Number(totalExpenses.substring(0, totalExpenses.indexOf('</td>')));
+      }
+      remainingBudget = (remainingBudget - totalExpenses).toFixed(2);
+      return callback(null, remainingBudget);
+    }
+  });
+}
+
+function getShortBookBudgetExpensesHtml(baseUrl, callback) {
+  $.ajax({
+    type: "POST",
+    url: baseUrl + "/action/reports/user/detail/expense/report",
+    data: {
+      loadValues: true,
+      targetPath: '/reports/user/detail/expense/report',
+      managerPath: '/reports/user/detail/expense/search',
+      criteriaClass: 'com.unanet.page.reports.search.UserExpenseDetailsCriteria',
+      project_orgMode: false,
+      project_filterClosedProjects: false,
+      expensetype: '22',
+      dateRange: 'c_yr',
+      expenseDates: 'INCURRED',
+      includeNonCompletedExpenses: true,
+      showVoucherNumber: true,
+      showComments: false,
+      showPaymentMethod: false,
+      showProjTitle: false,
+      groupType: 'byProject'
+    },
+    success: function getBookBudgetExpensesHtmlSuccess(data) {
+      var dataIndex = data.indexOf('<table class="report"');
+      var remainingBudget = parseInt(localStorage.bookBudget) || 500;
+      var totalExpenses = 0;
+      if (dataIndex != -1) {
+        totalExpenses = data.substring(data.indexOf('<td class="total">$') + '<td class="total">$'.length);
+        totalExpenses = Number(totalExpenses.substring(0, totalExpenses.indexOf('</td>')));
+      } 
+      remainingBudget = (remainingBudget - totalExpenses).toFixed(2);
+      return callback(null, remainingBudget);
+    }
+  });
+}
+
+
