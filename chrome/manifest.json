@@ -1,6 +1,6 @@
 {
   "name": "Unanet Chrome Extension",
-  "version": "0.1",
+  "version": "0.2",
   "manifest_version": 2,
   "description": "Provides reminder and page enhancements to Unanet time sheets.",
   "browser_action": {
