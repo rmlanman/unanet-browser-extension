@@ -446,7 +446,7 @@ function getTrainingExpensesHtml(baseUrl, callback) {
         secondHalf = data.substr(data.indexOf('</table'));
       } else {
         totalExpenses = data.substring(data.indexOf('<td class="total">$') + '<td class="total">$'.length);
-        totalExpenses = Number(totalExpenses.substring(0, totalExpenses.indexOf('</td>')));
+        totalExpenses = parseFloat(totalExpenses.replace(/,/g, ''));
         data = data.substr(dataIndex);
         data = data.replace(/<table class="report"/, '<table id="trainingBudgetExpensesTable" class="list"');
         data = data.substr(0, data.indexOf('</table>') + '</table>'.length);
@@ -454,9 +454,11 @@ function getTrainingExpensesHtml(baseUrl, callback) {
         secondHalf = data.substr(data.indexOf('</tbody>'));
       }
       remainingBudget = (remainingBudget - totalExpenses).toFixed(2);
-      var remainingHTML = '<tr class="t1"><td colspan="5" class="label">Remaining Training Budget:</td><td class="total">$' + remainingBudget + '</td></tr>';
-      data = firstHalf.concat(remainingHTML).concat(secondHalf);
-      return callback(null, data);
+      formatMoney(remainingBudget, function (formattedRemainder) {
+        var remainingHTML = '<tr class="t1"><td colspan="5" class="label">Remaining Book Budget:</td><td class="total">$' + formattedRemainder + '</td></tr>';
+        data = firstHalf.concat(remainingHTML).concat(secondHalf);
+        return callback(null, data);
+      });
     }
   });
 }
@@ -497,17 +499,19 @@ function getBookBudgetExpensesHtml(baseUrl, callback) {
         secondHalf = data.substr(data.indexOf('</table'));
       } else {
         totalExpenses = data.substring(data.indexOf('<td class="total">$') + '<td class="total">$'.length);
-        totalExpenses = Number(totalExpenses.substring(0, totalExpenses.indexOf('</td>')));
-        data = data.substr(dataIndex);
+        totalExpenses = parseFloat(totalExpenses.replace(/,/g, ''));        data = data.substr(dataIndex);
         data = data.replace(/<table class="report"/, '<table id="bookBudgetExpensesTable" class="list"');
         data = data.substr(0, data.indexOf('</table>') + '</table>'.length);
         firstHalf = data.substr(0, data.indexOf('</tbody>'));
         secondHalf = data.substr(data.indexOf('</tbody>'));
       }
       remainingBudget = (remainingBudget - totalExpenses).toFixed(2);
-      var remainingHTML = '<tr class="t1"><td colspan="5" class="label">Remaining Book Budget:</td><td class="total">$' + remainingBudget + '</td></tr>';
-      data = firstHalf.concat(remainingHTML).concat(secondHalf);
-      return callback(null, data);
+      formatMoney(remainingBudget, function (formattedRemainder) {
+        var remainingHTML = '<tr class="t1"><td colspan="5" class="label">Remaining Book Budget:</td><td class="total">$' + formattedRemainder + '</td></tr>';
+        data = firstHalf.concat(remainingHTML).concat(secondHalf);
+        return callback(null, data);
+      });
+
     }
   });
 }
@@ -578,10 +582,13 @@ function getShortTrainingBudgetExpensesHtml(baseUrl, callback) {
       var totalExpenses = 0;
       if (dataIndex != -1) {
         totalExpenses = data.substring(data.indexOf('<td class="total">$') + '<td class="total">$'.length);
-        totalExpenses = Number(totalExpenses.substring(0, totalExpenses.indexOf('</td>')));
+        totalExpenses = parseFloat(totalExpenses.replace(/,/g, ''));
       }
       remainingBudget = (remainingBudget - totalExpenses).toFixed(2);
-      return callback(null, '$' + remainingBudget);
+      formatMoney(remainingBudget, function (formattedRemainder) {
+        return callback(null, '$' + formattedRemainder);
+      });
+      
     }
   });
 }
@@ -613,10 +620,12 @@ function getShortBookBudgetExpensesHtml(baseUrl, callback) {
       var totalExpenses = 0;
       if (dataIndex != -1) {
         totalExpenses = data.substring(data.indexOf('<td class="total">$') + '<td class="total">$'.length);
-        totalExpenses = Number(totalExpenses.substring(0, totalExpenses.indexOf('</td>')));
+        totalExpenses = parseFloat(totalExpenses.replace(/,/g, ''));
       } 
       remainingBudget = (remainingBudget - totalExpenses).toFixed(2);
-      return callback(null, '$' + remainingBudget);
+      formatMoney(remainingBudget, function (formattedRemainder) {
+        return callback(null, '$' + formattedRemainder);
+      });
     }
   });
 }
@@ -659,4 +668,13 @@ function getShortImportedExpensesHtml(baseUrl, callback) {
   });
 }
 
+function formatMoney(floatValue, callback) {
+  var floatParts = floatValue.split('.');
+  var dollars = floatParts[0];
+  var cents = floatParts[1];
+  if (dollars.length > 3) {
+    var dollars = dollars.substr(0,dollars.length - 3) + ',' + dollars.substr(dollars.length - 3);
+  }
+  return callback(dollars + '.' + cents);
+}
 
