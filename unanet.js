@@ -32,9 +32,9 @@ function checkTimesheets(opts, callback) {
               ]
             }
           ], timesheets);
-        }  
+        }
       });
-      
+
     }
     return async.forEach(timesheets, function(timesheet, callback) {
       return getTimesheet(opts, timesheet.id, function(err, timesheetData) {
@@ -281,10 +281,10 @@ function login(opts, callback) {
   return $.ajax({
       type: "POST",
       url: opts.urlBase + '/action/login/validate',
-      data: {
+      data: unanetPostDataSerialize({
         username: opts.username,
         password: opts.password
-      },
+      }),
       success: function(body) {
         if (/Invalid username or password/.test(body)) {
           return callback(new Error('Invalid username or password.'));
@@ -332,7 +332,7 @@ function getImportedExpensesHtml(baseUrl, callback) {
   $.ajax({
     type: "POST",
     url: baseUrl + "/action/expense/imported/list",
-    data: {
+    data: unanetPostDataSerialize({
       voucher_mod: false,
       voucherClass: 'com.unanet.page.criteria.UserVoucherNumberMenu',
       voucher_dbValue: null,
@@ -355,7 +355,7 @@ function getImportedExpensesHtml(baseUrl, callback) {
       edit: false,
       addNext: false,
       blindInsert: false
-    },
+    }),
     success: function getImportedExpensesHtmlSuccess(data) {
       data = data.substr(data.indexOf('<table class="list"'));
       data = data.substr(0, data.indexOf('</table>') + '</table>'.length);
@@ -370,7 +370,7 @@ function getLeaveBudgetHtml(baseUrl, callback) {
   $.ajax({
     type: "POST",
     url: baseUrl + "/action/reports/user/detail/schedule/report",
-    data: {
+    data: unanetPostDataSerialize({
       loadValues: true,
       targetPath: '/reports/user/detail/schedule/report',
       managerPath: '/reports/user/detail/schedule/search',
@@ -390,7 +390,7 @@ function getLeaveBudgetHtml(baseUrl, callback) {
       includeUnsched: false,
       leaveBalance: true,
       showProjTitle: true
-    },
+    }),
     success: function getLeaveBudgetHtmlSuccess(data) {
       var dataIndex = data.indexOf('<table class=report');
       if (dataIndex === -1) {
@@ -414,7 +414,7 @@ function getTrainingExpensesHtml(baseUrl, callback) {
   $.ajax({
     type: "POST",
     url: baseUrl + "/action/reports/user/detail/expense/report",
-    data: {
+    data: unanetPostDataSerialize({
       loadValues: true,
       targetPath: '/reports/user/detail/expense/report',
       managerPath: '/reports/user/detail/expense/search',
@@ -430,7 +430,7 @@ function getTrainingExpensesHtml(baseUrl, callback) {
       showPaymentMethod: false,
       showProjTitle: false,
       groupType: 'byProject'
-    },
+    }),
     success: function getTrainingExpensesHtmlSuccess(data) {
       var dataIndex = data.indexOf('<table class="report"');
       var remainingBudget = parseInt(localStorage.trainingBudget) || 5000;
@@ -467,7 +467,7 @@ function getBookBudgetExpensesHtml(baseUrl, callback) {
   $.ajax({
     type: "POST",
     url: baseUrl + "/action/reports/user/detail/expense/report",
-    data: {
+    data: unanetPostDataSerialize({
       loadValues: true,
       targetPath: '/reports/user/detail/expense/report',
       managerPath: '/reports/user/detail/expense/search',
@@ -483,7 +483,7 @@ function getBookBudgetExpensesHtml(baseUrl, callback) {
       showPaymentMethod: false,
       showProjTitle: false,
       groupType: 'byProject'
-    },
+    }),
     success: function getBookBudgetExpensesHtmlSuccess(data) {
       var dataIndex = data.indexOf('<table class="report"');
       var remainingBudget = parseInt(localStorage.bookBudget) || 500;
@@ -521,7 +521,7 @@ function getShortLeaveBudgetHTML(baseUrl, callback) {
   $.ajax({
     type: "POST",
     url: baseUrl + "/action/reports/user/detail/schedule/report",
-    data: {
+    data: unanetPostDataSerialize({
       loadValues: true,
       targetPath: '/reports/user/detail/schedule/report',
       managerPath: '/reports/user/detail/schedule/search',
@@ -541,7 +541,7 @@ function getShortLeaveBudgetHTML(baseUrl, callback) {
       includeUnsched: false,
       leaveBalance: true,
       showProjTitle: true
-    },
+    }),
     success: function getLeaveBudgetHtmlSuccess(data) {
       data = data.substr(data.indexOf('PTO'));
       data = data.substr(data.indexOf('number') + 8);
@@ -559,7 +559,7 @@ function getShortTrainingBudgetExpensesHtml(baseUrl, callback) {
   $.ajax({
     type: "POST",
     url: baseUrl + "/action/reports/user/detail/expense/report",
-    data: {
+    data: unanetPostDataSerialize({
       loadValues: true,
       targetPath: '/reports/user/detail/expense/report',
       managerPath: '/reports/user/detail/expense/search',
@@ -575,7 +575,7 @@ function getShortTrainingBudgetExpensesHtml(baseUrl, callback) {
       showPaymentMethod: false,
       showProjTitle: false,
       groupType: 'byProject'
-    },
+    }),
     success: function getTrainingExpensesHtmlSuccess(data) {
       var dataIndex = data.indexOf('<table class="report"');
       var remainingBudget = parseInt(localStorage.trainingBudget) || 5000;
@@ -588,7 +588,7 @@ function getShortTrainingBudgetExpensesHtml(baseUrl, callback) {
       formatMoney(remainingBudget, function (formattedRemainder) {
         return callback(null, '$' + formattedRemainder);
       });
-      
+
     }
   });
 }
@@ -597,7 +597,7 @@ function getShortBookBudgetExpensesHtml(baseUrl, callback) {
   $.ajax({
     type: "POST",
     url: baseUrl + "/action/reports/user/detail/expense/report",
-    data: {
+    data: unanetPostDataSerialize({
       loadValues: true,
       targetPath: '/reports/user/detail/expense/report',
       managerPath: '/reports/user/detail/expense/search',
@@ -613,7 +613,7 @@ function getShortBookBudgetExpensesHtml(baseUrl, callback) {
       showPaymentMethod: false,
       showProjTitle: false,
       groupType: 'byProject'
-    },
+    }),
     success: function getBookBudgetExpensesHtmlSuccess(data) {
       var dataIndex = data.indexOf('<table class="report"');
       var remainingBudget = parseInt(localStorage.bookBudget) || 500;
@@ -621,7 +621,7 @@ function getShortBookBudgetExpensesHtml(baseUrl, callback) {
       if (dataIndex != -1) {
         totalExpenses = data.substring(data.indexOf('<td class="total">$') + '<td class="total">$'.length);
         totalExpenses = parseFloat(totalExpenses.replace(/,/g, ''));
-      } 
+      }
       remainingBudget = (remainingBudget - totalExpenses).toFixed(2);
       formatMoney(remainingBudget, function (formattedRemainder) {
         return callback(null, '$' + formattedRemainder);
@@ -634,7 +634,7 @@ function getShortImportedExpensesHtml(baseUrl, callback) {
   $.ajax({
     type: "POST",
     url: baseUrl + "/action/expense/imported/list",
-    data: {
+    data: unanetPostDataSerialize({
       voucher_mod: false,
       voucherClass: 'com.unanet.page.criteria.UserVoucherNumberMenu',
       voucher_dbValue: null,
@@ -657,7 +657,7 @@ function getShortImportedExpensesHtml(baseUrl, callback) {
       edit: false,
       addNext: false,
       blindInsert: false
-    },
+    }),
     success: function getImportedExpensesHtmlSuccess(data) {
       if (data.indexOf('No data found') === -1) {
         return callback(null, "<div class=\"warn\">You have unreported expenses</div>");
@@ -678,3 +678,19 @@ function formatMoney(floatValue, callback) {
   return callback(dollars + '.' + cents);
 }
 
+// need this because jquery does not handle arrays correctly for unanet.
+// jquery will add '[]' to the name of the variable and unanet does not expect '[]'
+function unanetPostDataSerialize(data) {
+  var items = [];
+  Object.keys(data).forEach(function(key) {
+    var value = data[key];
+    if(value instanceof Array) {
+      value.forEach(function(v) {
+        items.push(encodeURIComponent(key) + "=" + encodeURIComponent(v));
+      });
+    } else {
+      items.push(encodeURIComponent(key) + "=" + encodeURIComponent(value));
+    }
+  });
+  return items.join('&').replace(/%20/g, '+');
+}
