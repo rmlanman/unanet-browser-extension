@@ -135,7 +135,6 @@ function getAllTimesheets(opts, callback) {
     if (err) {
       return callback(err);
     }
-
     var rows = [];
 
     body = body.substr(body.indexOf('<div id="active-timesheet-list"'));
@@ -187,7 +186,7 @@ function getTimesheet(opts, timesheetId, callback) {
       timesheet.startDate = new Date(timesheetDatesMatch[2]);
       timesheet.startDate.setHours(0, 0, 0, 0);
       timesheet.endDate = new Date(timesheetDatesMatch[3]);
-      timesheet.endDate.setHours(0, 0, 0, 0);
+      timesheet.endDate.setHours(23, 59, 59, 999);
       timesheet.endDate = new Date(+timesheet.endDate + ONE_DAY_MS - 1);
     }
 
@@ -297,7 +296,7 @@ function login(opts, callback) {
 
 function shouldHaveActiveTimesheet(opts, callback) {
   var currentDate = new Date();
-  currentDate.setDate(currentDate.getDate() + 14);
+  currentDate.setDate(currentDate.getDate());
   var dayOfTheWeek = currentDate.getDay();
   var shouldWarn = false;
   if (dayOfTheWeek === Days.Saturday || dayOfTheWeek === Days.Sunday) {
@@ -315,13 +314,14 @@ function shouldHaveActiveTimesheet(opts, callback) {
 }
 
 function timesheetExistsForCurrentDay(timesheets, date, callback) {
-  timesheets.forEach(function (timesheet, index) {
-    if ((+timesheet.startDate < +date) && (+date < +timesheet.endDate)) {
+  //Set timesheet end date hours to 11:59:59
+  for(var i = 0; i < timesheets.length; i++) {
+    timesheets[i].endDate.setHours(23, 59, 59, 999);
+    if ((+timesheets[i].startDate < +date) && (+date < +timesheets[i].endDate)) {
       return callback(true);
-    } else if (index === timesheets.length - 1) {
-      return callback(false);
     }
-  });
+  }
+  return callback(false);
 }
 
 function formatDate_MM_dd_yyyy(d) {
