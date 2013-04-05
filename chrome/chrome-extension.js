@@ -24,7 +24,7 @@ function onOpenHomepage() {
 function onOpenTimesheet() {
   var timesheetId = localStorage.currentTimesheetId;
   var timesheetUrl;
-  if (timesheetId) {
+  if (timesheetId && timesheetId != "null") {
     timesheetUrl = localStorage.url + '/action/time/edit?timesheetkey=' + timesheetId;
   } else {
     timesheetUrl = localStorage.url + '/action/time';
