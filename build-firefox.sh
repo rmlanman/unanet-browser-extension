@@ -9,7 +9,7 @@ mkdir -p ./build/firefox/skin
 cp ./images/* ./build/firefox/skin
 cp -R ./firefox/* ./build/firefox
 mkdir ./build/firefox/data
-cp ./chrome/content-script-home.js ./build/firefox/data
+cp ./content-script-home.js ./build/firefox/data
 cp ./unanet.js ./build/firefox/data
 cp ./libs/* ./build/firefox/data
 

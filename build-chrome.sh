@@ -5,6 +5,7 @@ echo Building chrome extension...
 rm -rf ./build/chrome
 
 mkdir -p ./build/chrome
+cp ./content-script-home.js ./build/chrome
 cp ./unanet.js ./build/chrome
 cp ./chrome/* ./build/chrome
 cp ./images/* ./build/chrome
