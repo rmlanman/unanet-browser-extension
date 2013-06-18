@@ -455,7 +455,7 @@ function getTrainingExpensesHtml(baseUrl, callback) {
       }
       remainingBudget = (remainingBudget - totalExpenses).toFixed(2);
       formatMoney(remainingBudget, function (formattedRemainder) {
-        var remainingHTML = '<tr class="t1"><td colspan="5" class="label">Remaining Book Budget:</td><td class="total">$' + formattedRemainder + '</td></tr>';
+        var remainingHTML = '<tr class="t1"><td colspan="5" class="label">Remaining Training Budget:</td><td class="total">$' + formattedRemainder + '</td></tr>';
         data = firstHalf.concat(remainingHTML).concat(secondHalf);
         return callback(null, data);
       });
