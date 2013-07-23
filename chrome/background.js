@@ -88,8 +88,15 @@ function checkTimesheet(callback) {
   }
 }
 
-setInterval(checkTimesheet, 10 * 60 * 1000);
-checkTimesheet();
+var pageLoaded = false;
+
+$(function () {
+    if (pageLoaded) return;
+    pageLoaded = true;
+    
+    setInterval(checkTimesheet, 10 * 60 * 1000);
+    checkTimesheet();
+});
 
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.method == "getLocalStorage") {
