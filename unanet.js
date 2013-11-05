@@ -71,24 +71,35 @@ function checkTimesheets(opts, callback) {
     endOfWorkDay.setHours(localStorage.endOfDayHours, localStorage.endOfDayMinutes, 0, 0);
 
     var errors = [];
+    console.log('checking timesheet', timesheet);
     timesheet.columns.forEach(function(column, i) {
       var columnDate = new Date(column);
+      console.log('checking column', i, columnDate);
+
       var columnDay = columnDate.getDay();
       if (columnDay == Days.Saturday || columnDay == Days.Sunday) {
+        console.log('skipping column Saturday/Sunday');
         return;
       }
       if (columnDate > endOfToday) {
+        console.log('skipping column.', columnDate, '>', endOfToday);
         return;
       }
       if (columnDate >= startOfToday && columnDate <= endOfToday && new Date() < endOfWorkDay) {
+        console.log('skipping column.', columnDate, '>=', startOfToday, ' && ', columnDate, '<=', endOfToday, ' && ', new Date(), '<', endOfWorkDay);
         return;
       }
       if (!timesheet.totals[i] || timesheet.totals[i] == 0) {
-        errors.push({
+        var error = {
           date: columnDate,
           message: 'No time filled in for ' + formatDate_MM_dd_yyyy(columnDate)
-        });
+        };
+        console.log('Found error for column', i, timesheet.totals[i], error);
+        errors.push(error);
+        return;
       }
+
+      console.log('column ok');
     });
     return callback(null, errors);
   }
@@ -224,13 +235,13 @@ function getTimesheet(opts, timesheetId, callback) {
 
   function updateTimesheetWithHeaderRow(timesheet, columns) {
     // date columns start at 5 and the last column is the totals column
-    var date = new Date(+timesheet.startDate);
     for (var i = 5; i < columns.length - 1; i++) {
       var t = $(columns.get(i)).text().toLowerCase();
       var m = t.match(/[a-z]*([0-9]*)/);
       if (m && m[1].length > 0) {
+        var date = new Date(timesheet.startDate.getFullYear(), timesheet.startDate.getMonth(), timesheet.startDate.getDate() + (i - 5));
+        console.log('updateTimesheetWithHeaderRow', date, m);
         timesheet.columns.push(date);
-        date = new Date(+date + ONE_DAY_MS);
       }
     }
   }
