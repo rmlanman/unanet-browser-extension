@@ -9,7 +9,7 @@
   },
   "options_page": "options.html",
   "background": {
-    "scripts": ["async.min.js", "unanet.js", "jquery-1.8.3.min.js", "background.js"]
+    "scripts": ["async.min.js", "unanet.js", "jquery-1.8.3.min.js", "chrome-common.js", "background.js"]
   },
   "icons": {
     "128": "unanet128.png"

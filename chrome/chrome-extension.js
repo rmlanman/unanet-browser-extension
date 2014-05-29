@@ -22,17 +22,7 @@ function onOpenHomepage() {
 }
 
 function onOpenTimesheet() {
-  var timesheetId = localStorage.currentTimesheetId;
-  var timesheetUrl;
-  if (timesheetId && timesheetId != "null") {
-    timesheetUrl = localStorage.url + '/action/time/edit?timesheetkey=' + timesheetId;
-  } else {
-    timesheetUrl = localStorage.url + '/action/time';
-  }
-  chrome.tabs.create({
-    url: timesheetUrl,
-    active: true
-  });
+  openTimesheet();
 }
 
 function loadSettings() {
@@ -63,7 +53,7 @@ function saveSettings() {
   localStorage.password = $('#password').val();
   localStorage.endOfDayMinutes = $('#endOfDayTimeMinute').val();
   localStorage.endOfDayHours = parseInt($('#endOfDayTimeHour').val()) + (parseInt($('#endOfDayTimeAmPm').val()) * 12);
-  localStorage.trainingBudget = parseInt($('#trainingBudget').val()); 
+  localStorage.trainingBudget = parseInt($('#trainingBudget').val());
   localStorage.bookBudget = parseInt($('#bookBudget').val());
   updateLinks();
 }

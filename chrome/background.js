@@ -13,6 +13,7 @@ function checkTimesheet(callback) {
   };
 
   return checkTimesheets(opts, function(err, timesheetErrors, timesheets) {
+    console.log("begin checkTimesheets");
     localStorage.timesheetErrors = null;
     localStorage.errorMessages = null;
     localStorage.lastCheck = new Date();
@@ -39,19 +40,40 @@ function checkTimesheet(callback) {
       });
 
       if (!notification) {
-        notification = webkitNotifications.createNotification(
-          'unanet128.png',
-          'Timesheet Errors',
-          timesheetErrorMessages.join('\n')
-        );
-        notification.show();
+        console.log('popup notification')
+        if(chrome && chrome.notifications) {
+          chrome.notifications.create('unanetReminder', {
+            type: "basic",
+            title: "Timesheet Errors",
+            message: timesheetErrorMessages.join('\n'),
+            iconUrl: "unanet128.png",
+            buttons: [
+              {
+                title: "Open Timesheet"
+              }
+            ]
+          }, function(id) {
+            notification = id;
+          });
+        } else {
+          notification = webkitNotifications.createNotification(
+            'unanet128.png',
+            'Timesheet Errors',
+            timesheetErrorMessages.join('\n')
+          );
+          notification.show();
+        }
       }
 
       setBadgeToError();
     } else {
       if (notification) {
-        notification.cancel();
-        notification = null;
+        if(chrome && chrome.notifications) {
+          chrome.notifications.clear(notification, function() {});
+        } else {
+          notification.cancel();
+          notification = null;
+        }
       }
       setBadgeToOk();
     }
@@ -93,7 +115,7 @@ var pageLoaded = false;
 $(function () {
     if (pageLoaded) return;
     pageLoaded = true;
-    
+
     setInterval(checkTimesheet, 10 * 60 * 1000);
     checkTimesheet();
 });
@@ -109,3 +131,23 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
     });
   }
 });
+
+if(chrome.notifications && chrome.notifications.onButtonClicked) {
+  chrome.notifications.onButtonClicked.addListener(function(notifId, btnIdx) {
+    if (notifId === notification) {
+      if (btnIdx === 0) {
+        var timesheetId = localStorage.currentTimesheetId;
+        var timesheetUrl;
+        if (timesheetId && timesheetId != "null") {
+          timesheetUrl = localStorage.url + '/action/time/edit?timesheetkey=' + timesheetId;
+        } else {
+          timesheetUrl = localStorage.url + '/action/time';
+        }
+        chrome.tabs.create({
+          url: timesheetUrl,
+          active: true
+        });
+      }
+    }
+  });
+}
